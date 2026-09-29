@@ -1,15 +1,15 @@
 # VR Psychological Experiment Room
 
-Fundamentals of eXtended Reality — Master HCI, Université Paris-Saclay
+Fundamentals of eXtended Reality - Master HCI, Université Paris-Saclay
 Final group project, September–October 2026
 
-## Group members
+## Group 2
 
-| Name | Contribution |
-|---|---|
-| Marina Yamaguti | _fill in_ |
-| _Classmate 2_ | _fill in_ |
-| _Classmate 3_ | _fill in_ |
+| Name |
+|--- |
+| Marina GELLER YAMAGUTI |
+| Fatoumata OULARE |
+| Meriem AIT AHMED |
 
 ## Project overview
 
@@ -41,7 +41,7 @@ does, in what order, and what the app records._
 
 ## Setup
 
-- Unity **6.3 LTS (6000.3.24f1)** — required, all three of you should be on this exact version.
+- Unity **6.3 LTS (6000.3.24f1)** 
 - Meta XR Core SDK + Interaction SDK + OpenXR Plugin (already resolved in `Packages/manifest.json`).
 - Meta XR Simulator for headset-less development; a Meta Quest 3 for full testing.
 - Git LFS is required before cloning/committing binary assets — run `git lfs install` once per machine.
