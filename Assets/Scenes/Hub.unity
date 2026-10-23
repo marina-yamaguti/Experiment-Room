@@ -318,7 +318,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.5649996, y: -0.116000175}
+  m_AnchoredPosition: {x: 1.537, y: -0.116000175}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &125035851
@@ -424,6 +424,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 293525615}
+  - component: {fileID: 293525616}
   m_Layer: 0
   m_Name: RightHandAnchor
   m_TagString: Untagged
@@ -448,6 +449,23 @@ Transform:
   - {fileID: 1187616510}
   m_Father: {fileID: 1599381976}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &293525616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 293525614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6c34404aa50d40b1886a530a886c425, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RayPointer
+  maxDistance: 10
+  selectButton: 2097152
+  lineWidth: 0.004
+  idleColor: {r: 1, g: 1, b: 1, a: 0.6}
+  hoverColor: {r: 0.2, g: 1, b: 0.4, a: 1}
 --- !u!1 &317259865
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +475,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 317259866}
+  - component: {fileID: 317259868}
+  - component: {fileID: 317259867}
   m_Layer: 0
   m_Name: Door_B
   m_TagString: Untagged
@@ -488,6 +508,42 @@ Transform:
   - {fileID: 2909506341287156096}
   m_Father: {fileID: 543450653090457207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &317259867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317259865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5351cb27941594925999bde6b8517593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneLink
+  targetScene: RoomB
+  lockWhenCompleted: 1
+--- !u!114 &317259868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 317259865}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa87436af6d04013a5787009399427c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PointerTarget
+  interactable: 1
+  onHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
@@ -673,6 +729,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 914457327}
+  - component: {fileID: 914457329}
+  - component: {fileID: 914457328}
   m_Layer: 0
   m_Name: Door_A
   m_TagString: Untagged
@@ -704,6 +762,42 @@ Transform:
   - {fileID: 5294939546907981788}
   m_Father: {fileID: 543450653090457207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &914457328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914457326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5351cb27941594925999bde6b8517593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneLink
+  targetScene: RoomA
+  lockWhenCompleted: 1
+--- !u!114 &914457329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914457326}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa87436af6d04013a5787009399427c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PointerTarget
+  interactable: 1
+  onHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &950493299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1765,6 +1859,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2015271122}
+  - component: {fileID: 2015271124}
+  - component: {fileID: 2015271123}
   m_Layer: 0
   m_Name: Door_C
   m_TagString: Untagged
@@ -1796,6 +1892,42 @@ Transform:
   - {fileID: 4256036062112870518}
   m_Father: {fileID: 543450653090457207}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2015271123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015271121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5351cb27941594925999bde6b8517593, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SceneLink
+  targetScene: RoomC
+  lockWhenCompleted: 1
+--- !u!114 &2015271124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015271121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aa87436af6d04013a5787009399427c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PointerTarget
+  interactable: 1
+  onHoverEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  onHoverExit:
+    m_PersistentCalls:
+      m_Calls: []
+  onSelected:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2102129631
 GameObject:
   m_ObjectHideFlags: 0
