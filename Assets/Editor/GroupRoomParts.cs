@@ -9,6 +9,7 @@ using UnityEngine;
 /// The export is a flat list of parts with numbered names. This groups them into
 /// Obj_Book, Obj_Mug, Obj_Lamp, Obj_Frame, Obj_Vase, Table and Door, fits a BoxCollider
 /// around each object (so the ray pointer can select it) and adds a PointerTarget.
+/// It adds a RoomObject to each object and creates the "Trial" object that runs the experiment.
 /// It also hides the extra "ground_1" plane that would flicker against the floor.
 ///
 /// USE: drag Room_A.obj into the scene (object must be called "Room_A"), then
@@ -69,6 +70,8 @@ public static class GroupRoomParts
                 FitBoxCollider(group);
                 if (group.GetComponent<PointerTarget>() == null)
                     Undo.AddComponent<PointerTarget>(group.gameObject);
+                if (group.GetComponent<RoomObject>() == null)
+                    Undo.AddComponent<RoomObject>(group.gameObject);
             }
 
             Debug.Log("GroupRoomParts: " + entry.Key + " <- " + moved + " parts (" + group.childCount + " inside now).");
@@ -84,6 +87,16 @@ public static class GroupRoomParts
             doorParts++;
         }
         Debug.Log("GroupRoomParts: Door <- " + doorParts + " parts (" + door.childCount + " inside now).");
+
+        // the object that runs the trials: TrialManager + the change type of this room
+        if (UnityEngine.Object.FindFirstObjectByType<TrialManager>() == null)
+        {
+            GameObject trial = new GameObject("Trial");
+            Undo.RegisterCreatedObjectUndo(trial, "Create Trial");
+            Undo.AddComponent<TrialManager>(trial);
+            Undo.AddComponent<ColorChange>(trial);
+            Debug.Log("GroupRoomParts: created the 'Trial' object (TrialManager + ColorChange).");
+        }
     }
 
     private static Transform FindOrCreateChild(Transform parent, string childName)
