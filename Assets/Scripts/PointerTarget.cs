@@ -11,9 +11,9 @@ public class PointerTarget : MonoBehaviour
     [Tooltip("Untick to make the object ignore the pointer (e.g. a locked door).")]
     public bool interactable = true;
 
-    public UnityEvent onHoverEnter;
-    public UnityEvent onHoverExit;
-    public UnityEvent onSelected;
+    public UnityEvent onHoverEnter = new UnityEvent();
+    public UnityEvent onHoverExit = new UnityEvent();
+    public UnityEvent onSelected = new UnityEvent();
 
     public void HoverEnter() { onHoverEnter.Invoke(); }
     public void HoverExit() { onHoverExit.Invoke(); }
