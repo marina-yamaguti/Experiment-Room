@@ -1401,7 +1401,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1875477717}
   - component: {fileID: 1875477716}
-  - component: {fileID: 1875477715}
+  - component: {fileID: 1875477718}
   m_Layer: 0
   m_Name: Trial
   m_TagString: Untagged
@@ -1409,29 +1409,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1875477715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1875477714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aefb81f0aaf01487b887468886f94dc8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ColorChange
-  newColors:
-  - objectId: Mug
-    color: {r: 0, g: 0.6392157, b: 0.6039216, a: 1}
-  - objectId: Book
-    color: {r: 0.84313726, g: 0.14901961, b: 0.23921569, a: 1}
-  - objectId: Lamp
-    color: {r: 0.9490196, g: 0.77254903, b: 0, a: 1}
-  - objectId: Vase
-    color: {r: 0.48235294, g: 0.29411766, b: 0.16470589, a: 1}
-  - objectId: Frame
-    color: {r: 0.2, g: 0.2, b: 0.2, a: 1}
 --- !u!114 &1875477716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1444,7 +1421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55de7b3279b6448cd91cf7a4af4fba2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TrialManager
-  roomId: RoomA
+  roomId: RoomC
   trialsPerRoom: 4
   studySeconds: 5
   flickerSeconds: 0.1
@@ -1466,6 +1443,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1875477718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1875477714}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aecfa91c6ff9485d8a974d9d6b19972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DisappearChange
 --- !u!1 &1899714006
 GameObject:
   m_ObjectHideFlags: 0
