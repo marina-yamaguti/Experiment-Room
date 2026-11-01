@@ -211,6 +211,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomObject
   objectId: 
+  replacement: {fileID: 1962510923}
 --- !u!1 &125035851
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,6 +580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomObject
   objectId: 
+  replacement: {fileID: 653145293}
 --- !u!1001 &599691561
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -669,6 +671,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f431de8f6762a4b66ae4cdeba5a7efa9, type: 3}
   m_PrefabInstance: {fileID: 599691561}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &599691563 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f431de8f6762a4b66ae4cdeba5a7efa9, type: 3}
+  m_PrefabInstance: {fileID: 599691561}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &653145291
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -749,6 +756,11 @@ PrefabInstance:
 --- !u!4 &653145292 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: ae965eef0e35f45e8bd7791893a1e95d, type: 3}
+  m_PrefabInstance: {fileID: 653145291}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &653145293 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: ae965eef0e35f45e8bd7791893a1e95d, type: 3}
   m_PrefabInstance: {fileID: 653145291}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &900667674
@@ -1043,6 +1055,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomObject
   objectId: 
+  replacement: {fileID: 1183562652}
 --- !u!1 &1149766248
 GameObject:
   m_ObjectHideFlags: 0
@@ -1201,6 +1214,11 @@ PrefabInstance:
 --- !u!4 &1183562651 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 21b612ce025b744259a18568da18d86c, type: 3}
+  m_PrefabInstance: {fileID: 1183562650}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1183562652 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 21b612ce025b744259a18568da18d86c, type: 3}
   m_PrefabInstance: {fileID: 1183562650}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1187616509
@@ -1498,6 +1516,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomObject
   objectId: 
+  replacement: {fileID: 599691563}
 --- !u!1 &1529361921
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,6 +1613,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomObject
   objectId: 
+  replacement: {fileID: 1149766248}
 --- !u!1 &1586429894
 GameObject:
   m_ObjectHideFlags: 0
@@ -2035,6 +2055,11 @@ PrefabInstance:
 --- !u!4 &1962510922 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f6ef30c13643f4d4a8e0f9911149a6d9, type: 3}
+  m_PrefabInstance: {fileID: 1962510921}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1962510923 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f6ef30c13643f4d4a8e0f9911149a6d9, type: 3}
   m_PrefabInstance: {fileID: 1962510921}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1998665257
