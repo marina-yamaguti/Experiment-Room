@@ -10,6 +10,8 @@ public class RoomObject : MonoBehaviour
 {
     [Tooltip("Name written to the CSV. Filled from the object name (Obj_Mug -> Mug) when left empty.")]
     public string objectId;
+    [Tooltip(" Replacement object shown in room C after the original object disappears. Leave empty in other rooms.")]
+    public GameObject replacement;
 
     public PointerTarget Target { get; private set; }
     public Renderer[] Renderers { get; private set; }
@@ -40,7 +42,7 @@ public class RoomObject : MonoBehaviour
         foreach (Renderer r in Renderers) r.enabled = visible;
     }
 
-    /// <summary>Puts position, rotation, colours and visibility back as they were at the start.</summary>
+    /// <summary>Puts position, rotation, colours, replacements and visibility back as they were at the start.</summary>
     public void ResetToOriginal()
     {
         transform.localPosition = startLocalPosition;
@@ -50,6 +52,8 @@ public class RoomObject : MonoBehaviour
             Renderers[i].sharedMaterials = startMaterials[i];
 
         SetVisible(true);
+
+        if (replacement != null) replacement.SetActive(false);
     }
 
     /// <summary>World-space box around all the given objects.</summary>
