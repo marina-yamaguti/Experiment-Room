@@ -45,7 +45,7 @@ public static class BuildEndingScene
         }
 
         // start clean, so the tool can be run again
-        foreach (string n in new[] { "EndTable", "EndFloor", "Book", "Pen", "Ending", "LightPanel", "LightPanelStand", "RoomLight", "FanSound" })
+        foreach (string n in new[] { "EndTable", "EndFloor", "Book", "Pen", "Ending", "LightPanel", "LightPanelStand", "RoomLight", "FanSound", "RoomGapPatches" })
         {
             GameObject old = GameObject.Find(n);
             while (old != null)
@@ -56,6 +56,7 @@ public static class BuildEndingScene
         }
 
         int doors = LockDoors();
+        int patches = SealRoomGaps.Seal(); // closes the crack between the left wall and the floor / ceiling
 
         // the room's size, measured before anything is added (to keep the light panel inside the room)
         Bounds room = new Bounds(rig.transform.position, Vector3.zero);
@@ -131,7 +132,7 @@ public static class BuildEndingScene
 
         AssetDatabase.SaveAssets();
         EditorSceneManager.MarkSceneDirty(scene);
-        Debug.Log("BuildEndingScene: locked " + doors + " door(s), built the table with book and pen, added the Ending object. Save the scene (Cmd+S).");
+        Debug.Log("BuildEndingScene: sealed " + patches + " gap(s), locked " + doors + " door(s), built the table with book and pen, added the Ending object. Save the scene (Cmd+S).");
     }
 
     // the fan's sound (same settings as in the Hub: looping, 3D, fades out over 8 m)
@@ -225,8 +226,8 @@ public static class BuildEndingScene
         // a post and a base, so the panel is not floating in the air
         GameObject stand = new GameObject("LightPanelStand");
         stand.transform.SetPositionAndRotation(new Vector3(position.x, 0f, position.z), rotation);
-        AddPart(stand.transform, "Post", new Vector3(0f, 0.5f, 0.04f), new Vector3(0.06f, 1.0f, 0.04f), wood, false);
-        AddPart(stand.transform, "Base", new Vector3(0f, 0.015f, 0.04f), new Vector3(0.45f, 0.03f, 0.35f), wood, false);
+        AddPart(stand.transform, "Post", new Vector3(0f, 0.5f, 0.04f), new Vector3(0.06f, 1.0f, 0.04f), wood, true);
+        AddPart(stand.transform, "Base", new Vector3(0f, 0.015f, 0.04f), new Vector3(0.45f, 0.03f, 0.35f), wood, true); // solid: the participant cannot walk through the stand
     }
 
     private static bool InsideRoom(Bounds room, Vector3 p)
