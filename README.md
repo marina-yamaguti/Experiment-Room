@@ -104,9 +104,12 @@ Rooms share the same scripts and the `SequencePad` prefab. A new change type is 
 ### Marina GELLER YAMAGUTI
 - Repository, Unity project set-up (URP, Meta XR Core + Interaction SDK, OpenXR, Quest/Android build settings, Git LFS, README).
 - **Hub:** Sweet Home 3D model and import, three doors with coloured frames and "Experiment 1/2/3" signs (`DoorSign`), gliding locomotion and snap-turn (`GlideLocomotion`), ray pointer and door navigation (`RayPointer`, `PointerTarget`, `SceneLink`), persistent `GameManager`.
-- **Room A (colour) and the shared template for all rooms:** room model; editor tools that regroup the imported parts (`GroupHubParts`, `GroupRoomParts`); `TrialManager` (trial loop), `ChangeApplier` / `ColorChange`, `RoomObject`, `GreyFlicker`, `RoomHud` and `WorldTextBox` (readable floating text), `ConfidencePanel` (0–5 rating), `TrialLogger` (CSV).
+- **Room A (colour) and the shared template for all rooms:** room model; editor tools that regroup the imported parts (`GroupHubParts`, `GroupRoomParts`); `TrialManager` (trial loop, previous version), `ChangeApplier` / `ColorChange`, `RoomObject`, `GreyFlicker` (previous version), `RoomHud` and `WorldTextBox` (readable floating text), `ConfidencePanel` (0–5 rating), `TrialLogger` (CSV).
 - **Ending scene:** physics book and pen (`GrabbableProp`), paper questionnaire in an open-book style with handwriting font and procedurally drawn pages (`PaperQuiz`, `QuestionnaireLogger`), results page and page turn (`ResultsSummary`), `EndingManager`, editor tool `Tools > End > Set up ending scene`, redirect to the ending after the third room.
-- **Lighting and Canvas UI:** world-space Canvas light panel (`LightPanel`) and lighting control (`RoomLight`) in the ending scene.
+- **Lighting and Canvas UI:** world-space Canvas light panel (`LightPanel`) and lighting control (`RoomLight`) in the ending scene, with automatic dimming during the questionnaire; spotlights above the Hub doors that switch off once a room is completed (`DoorSpotlight`).
+- **Experiment timer:** 5-minute countdown at the bottom of the view in every scene (`ExperimentTimer`); the total time is shown on the results page.
+- **Collisions and room limits:** gap fixes in the Hub and End walls (`SealRoomGaps`), and `GlideLocomotion` keeps the participant inside the room and stops them at walls, tables and doors.
+- **Demo video:** recorded and edited the video demo (see Additional information).
 - **Audio:** `SoundPlayer` / `AmbientSound`; all sound effects and the elevator-music loop were synthesised with Python (no third-party audio), stored in `Assets/Resources/Audio`.
 
 ### Fatoumata OULARE
@@ -148,4 +151,4 @@ Here are the things we would change if we had more time:
 
 ## Additional information
 
-- There is a demo in the repository.
+- **Video demo:** [Google Drive folder](https://drive.google.com/drive/folders/1qDHZGwsvJVTBoF_VSR-R5SPpSv3N-gM8?usp=sharing). The video is not in the repository because of its size: it is recorded in 4K, since we had to film the screen with a camera to capture the sound, which makes the file too large for GitHub.
