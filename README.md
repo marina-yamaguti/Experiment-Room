@@ -33,14 +33,14 @@ real results.
 ## What's implemented
 
 - [x] **Environment** — Hub and the experiment rooms modelled in Sweet Home 3D and imported as OBJ (Hub, Room A, Room B, Room C, End scene).
-- [x] **Gliding locomotion** — left thumbstick glides relative to the head (flying optional), right thumbstick snap-turns 45°. A Quest has thumbsticks instead of a touchpad, so the thumbstick plays that role (`GlideLocomotion`).
+- [x] **Gliding locomotion** — left thumbstick glides relative to the head (flying optional), right thumbstick snap-turns 45°. The participant stays inside the room: the walls are found by name and act as limits, and the body is stopped by tables and doors (it slides along them). A Quest has thumbsticks instead of a touchpad, so the thumbstick plays that role (`GlideLocomotion`).
 - [x] **Ray-cast manipulation** — a ray from the right controller hovers (green) and selects objects with the trigger (`RayPointer`, `PointerTarget`). Used for doors, table objects, confidence buttons, questionnaire answers and picking up objects.
 - [x] **Runtime object activation/deactivation** — objects are hidden / swapped for a look-alike at runtime (`RoomObject.SetVisible`, Room C replacement `SetActive`).
-- [x] **3D TextMeshPro UI** — instructions, countdown, confidence panel and the questionnaire are world-space 3D TextMeshPro on semi-transparent boxes. _(No screen-space or Canvas UI: nothing is attached to the screen, which does not work in a headset.)_
+- [x] **Canvas + 3D TextMeshPro UI** — instructions, countdown, confidence panel and the questionnaire are world-space 3D TextMeshPro on semi-transparent boxes. The light control panel in the ending scene is a **world-space Canvas** (Image + TextMeshPro UI elements) operated with the ray pointer. Nothing is attached to the screen, which does not work in a headset.
 - [x] **Physics-driven interaction** — the book and pen in the ending scene are Rigidbodies: pick them up with the ray, put them down or throw them; they fall, collide and make impact sounds (`GrabbableProp`).
-- [ ] **Interactive lighting** — the hub has a ceiling light, but it cannot be switched on/off by the participant yet.
-- [x] **3D positional audio** — pickup, impact and page-turn sounds are played as 3D sources at the object's position (`SoundPlayer`); background elevator music in the ending scene (`AmbientSound`). _(Fan sound in the hub: in progress.)_
-- [x] **Countdown timer** — a 5-second study countdown before every change (`TrialManager`).
+- [x] **Lighting controlled during the interaction** — in the ending scene a light panel (on a stand next to the table) switches the room light on/off and dims or brightens it in six steps (`RoomLight`, `LightPanel`); the room also dims automatically while the participant answers the questionnaire. In the hub, a spotlight above each door stays lit while that room is still to do and fades out once it is completed (`DoorSpotlight`).
+- [x] **3D positional audio** — pickup, impact and page-turn sounds are played as 3D sources at the object's position (`SoundPlayer`); door sound, looping fan sound and background music in the hub (`GameManager`, Meriem), and in the ending scene the fan sound plus elevator music (`AmbientSound`) that replaces the global background music there.
+- [x] **Countdown timer** — a small experiment timer (5 minutes, label "Experiment duration") fixed to the bottom right of the view in every scene, amber in the last minute and red at 00:00 (`ExperimentTimer`); plus a 5-second study countdown before every change (`TrialManager`).
 - [x] **Reset logic** — every trial restores the objects to their original state (`RoomObject.ResetToOriginal`), props go back to the table before the questionnaire, and `GameManager.ResetSession()` starts a new participant. _(No reset button in VR yet.)_
 - [x] **Data logging** — `trials.csv` and `questionnaire.csv` (see below).
 
@@ -59,7 +59,7 @@ In the Meta XR Simulator, point and click moves the controller ray and sends the
 5. **Confidence** — a 0–5 panel (0 = pure guess, 5 = completely sure), selected with the ray.
 6. The trial is written to `trials.csv`, the table is reset, next trial. After the last one the room is marked as completed (its door locks in the hub) and the participant returns to the hub.
 
-**Ending scene (after the three rooms):** a table with a **book and a pen** (physics). When the participant has picked up both, the book opens as a **paper questionnaire** (handwritten look, one question per page: easiest / hardest room, easiest change, effect of distractions…). Answers go to `questionnaire.csv`. Then a **results page** summarises the participant's performance (correct answers overall and per room, average confidence, confidence when right vs. wrong, average reaction time), and the participant **turns the page** to reach "The End — thank you for taking part".
+**Ending scene (after the three rooms):** a table with a **book and a pen** (physics). When the participant has picked up both, the book opens as a **paper questionnaire** (handwritten look, one question per page: easiest / hardest room, easiest change, effect of distractions…). Answers go to `questionnaire.csv`. Then a **results page** summarises the participant's performance (correct answers overall and per room, average confidence, confidence when right vs. wrong, average reaction time, and the total time of the experiment), and the participant **turns the page** to reach "The End — thank you for taking part".
 
 **Data files** (`Application.persistentDataPath`, printed in the Console on first write):
 - Mac editor: `~/Library/Application Support/DefaultCompany/Experiment-Room/`
@@ -84,6 +84,9 @@ Delete both files between test sessions and real participants. The participant I
 | `TrialLogger`, `QuestionnaireLogger`, `ResultsSummary` | CSV logging and the numbers on the results page |
 | `EndingManager`, `GrabbableProp`, `PaperQuiz` | ending scene: pickup physics, paper questionnaire, results, page turn |
 | `SoundPlayer`, `AmbientSound` | 3D sound effects, background music |
+| `RoomLight`, `LightPanel` | scene lighting (on/off, 6 brightness steps, automatic dimming) and its world-space Canvas control panel |
+| `ExperimentTimer` | the experiment countdown at the bottom right of the view (creates itself in every scene) |
+| `DoorSpotlight` | the spotlight above each hub door: lit until the room is completed |
 | `DoorSign`, `FanSpinner` | door signs, spinning ceiling fan |
 | `Assets/Editor/*` | menu tools that group the imported Sweet Home 3D parts and set up the End scene |
 
@@ -99,6 +102,7 @@ Rooms share the same scripts. A new change type is a script that extends `Change
 - **Hub:** Sweet Home 3D model and import, three doors with coloured frames and "Experiment 1/2/3" signs (`DoorSign`), gliding locomotion and snap-turn (`GlideLocomotion`), ray pointer and door navigation (`RayPointer`, `PointerTarget`, `SceneLink`), persistent `GameManager`.
 - **Room A (colour) and the shared template for all rooms:** room model; editor tools that regroup the imported parts (`GroupHubParts`, `GroupRoomParts`); `TrialManager` (trial loop), `ChangeApplier` / `ColorChange`, `RoomObject`, `GreyFlicker`, `RoomHud` and `WorldTextBox` (readable floating text), `ConfidencePanel` (0–5 rating), `TrialLogger` (CSV).
 - **Ending scene:** physics book and pen (`GrabbableProp`), paper questionnaire in an open-book style with handwriting font and procedurally drawn pages (`PaperQuiz`, `QuestionnaireLogger`), results page and page turn (`ResultsSummary`), `EndingManager`, editor tool `Tools > End > Set up ending scene`, redirect to the ending after the third room.
+- **Lighting and Canvas UI:** world-space Canvas light panel (`LightPanel`) and lighting control (`RoomLight`) in the ending scene.
 - **Audio:** `SoundPlayer` / `AmbientSound`; all sound effects and the elevator-music loop were synthesised with Python (no third-party audio), stored in `Assets/Resources/Audio`.
 
 ### Fatoumata OULARE
@@ -129,7 +133,7 @@ Rooms share the same scripts. A new change type is a script that extends `Change
 
 ## Still to do / known limits
 
-- Interactive hub lighting (switch for the ceiling light) and fan sound in the hub (in progress).
+- The light panel only exists in the ending scene (the hub has the door spotlights instead).
 - Room redesign with a distraction task (button sequence to memorise) — in progress, trials per room may change.
 - Participant ID is fixed in the editor for now (no in-VR selector).
 - In-VR reset button for a new participant.
