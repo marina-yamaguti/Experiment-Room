@@ -14,35 +14,37 @@ Final group project, September–November 2026
 ## Project overview
 
 A VR experiment on **change blindness**: people often fail to notice even large changes in a scene
-when the change happens during a brief visual disruption.
+when the change happens while they are focused on another task.
 
 The participant starts in a **hub** with three doors, one per room. Every room has the same table with
-the same five objects (mug, book, lamp, vase, picture frame). Only the **type of change** differs:
+the same five objects (mug, book, lamp, vase, picture frame) and a plate with 4 buttons. They all have the same task to accomplish. Only the **type of change** differs:
 
 | Room | Change | What happens to the object |
 |--- |--- |--- |
-| A | Colour | one object changes colour |
-| B | Position | one object shifts about 10 cm |
-| C | Disappearance | one object disappears and is replaced by a look-alike |
+| A | Colour | two objects change colour |
+| B | Position | two objects shift about 10 cm |
+| C | Disappearance | two objects disappear and are replaced by look-alikes |
 
-Research question: does the type of change affect how often (and how fast) it is detected, and how
-confident are participants about their answers? Every trial is logged automatically (accuracy, reaction
-time, confidence), and a final questionnaire in VR compares the participant's impressions with their
-real results.
+**Research question**: do participants notice changes that happen without warning while they are busy with a memory task, and does the type of change (colour, position, disappearance) matter? Each trial is logged automatically (sequence accuracy, answer time, confidence, and which object changed), and the final questionnaire asks what the participant noticed.
+
+## Design iterations
+1. **Waiting room prototype:** one themed room with the grab/point interactions and trigger-based UI that the later versions reuse.
+2. **Change-blindness rooms with a flicker (proposal version):** At first we had 4 trials with a study the table, a grey flicker, then "Which object changed?". We thought it was trivial because the participants knew a change was coming every trial, so the task measured search, not really change blindness.
+3. **Hidden changes during a task (current version):** We were inspired by Simons' *Monkey Business Illusion*. Participants are given a demanding memory task and the changes happen during it without warning. Whether they noticed is only asked at the very end, in the questionnaire.
 
 ## What's implemented
-
 - [x] **Environment** — Hub and the experiment rooms modelled in Sweet Home 3D and imported as OBJ (Hub, Room A, Room B, Room C, End scene).
 - [x] **Gliding locomotion** — left thumbstick glides relative to the head (flying optional), right thumbstick snap-turns 45°. The participant stays inside the room: the walls are found by name and act as limits, and the body is stopped by tables and doors (it slides along them). A Quest has thumbsticks instead of a touchpad, so the thumbstick plays that role (`GlideLocomotion`).
-- [x] **Ray-cast manipulation** — a ray from the right controller hovers (green) and selects objects with the trigger (`RayPointer`, `PointerTarget`). Used for doors, table objects, confidence buttons, questionnaire answers and picking up objects.
+- [x] **Ray-cast manipulation** — a ray from the right controller hovers (green) and selects objects with the trigger (`RayPointer`, `PointerTarget`). Used for doors, the sequence task buttons, confidence buttons, questionnaire answers and picking up objects.
 - [x] **Runtime object activation/deactivation** — objects are hidden / swapped for a look-alike at runtime (`RoomObject.SetVisible`, Room C replacement `SetActive`).
 - [x] **Canvas + 3D TextMeshPro UI** — instructions, countdown, confidence panel and the questionnaire are world-space 3D TextMeshPro on semi-transparent boxes. The light control panel in the ending scene is a **world-space Canvas** (Image + TextMeshPro UI elements) operated with the ray pointer. Nothing is attached to the screen, which does not work in a headset.
 - [x] **Physics-driven interaction** — the book and pen in the ending scene are Rigidbodies: pick them up with the ray, put them down or throw them; they fall, collide and make impact sounds (`GrabbableProp`).
-- [x] **Lighting controlled during the interaction** — in the ending scene a light panel (on a stand next to the table) switches the room light on/off and dims or brightens it in six steps (`RoomLight`, `LightPanel`); the room also dims automatically while the participant answers the questionnaire. In the hub, a spotlight above each door stays lit while that room is still to do and fades out once it is completed (`DoorSpotlight`).
+- [x] **Lighting controlled during the interaction** — in the ending scene a light panel (on a stand next to the table) switches the room light on/off and dims or brightens it in six steps (`RoomLight`, `LightPanel`); the room also dims automatically while the participant answers the questionnaire. In the hub, a spotlight above each door stays lit while that room is still to do and fades out once it is completed (`DoorSpotlight`). In the three experiment rooms, each sequence button has its own point light and emissive material that switch on when the button flashes or is pressed (`SequenceButton`).
 - [x] **3D positional audio** — pickup, impact and page-turn sounds are played as 3D sources at the object's position (`SoundPlayer`); door sound, looping fan sound and background music in the hub (`GameManager`, Meriem), and in the ending scene the fan sound plus elevator music (`AmbientSound`) that replaces the global background music there.
-- [x] **Countdown timer** — a small experiment timer (5 minutes, label "Experiment duration") fixed to the bottom right of the view in every scene, amber in the last minute and red at 00:00 (`ExperimentTimer`); plus a 5-second study countdown before every change (`TrialManager`).
-- [x] **Reset logic** — every trial restores the objects to their original state (`RoomObject.ResetToOriginal`), props go back to the table before the questionnaire, and `GameManager.ResetSession()` starts a new participant. _(No reset button in VR yet.)_
+- [x] **Countdown timer** — a small experiment timer (5 minutes, label "Experiment duration") fixed to the bottom right of the view in every scene, amber in the last minute and red at 00:00 (`ExperimentTimer`); plus a 3 seconds countdown before each sequence of the memory task (`SequenceTask`).
+- [x] **Reset logic** — each room starts from its original state when the scene loads (the changed objects stay changed until the room ends, on purpose, so the participant can notice them later); `RoomObject.ResetToOriginal` restores position, colour and visibility and hides Room C look alikes; props go back to the table before the questionnaire, and `GameManager.ResetSession()` starts a new participant. _(No reset button in VR yet.)_
 - [x] **Data logging** — `trials.csv` and `questionnaire.csv` (see below).
+- [x] **Scripting of object behaviours and logic** — in the sequence memory task (`SequenceTask`) random sequences of increasing length and speed, input checking, two hidden changes per room on random objects timed with a button flash, confidence after each trial; buttons with a press animation (`SequenceButton`); the `SequencePad` prefab shares the same task across rooms A, B and C.
 
 ## How it works
 
@@ -51,13 +53,13 @@ real results.
 **Controls:** left thumbstick = glide, right thumbstick = snap turn, **right trigger (or A)** = select / pick up / put down.
 In the Meta XR Simulator, point and click moves the controller ray and sends the trigger press.
 
-**One room (4 trials, each on a different object):**
-1. A floating message asks the participant to press the trigger when ready.
-2. **Study the table** — a 5-second countdown; movement is locked.
-3. **Grey flicker** (~0.1 s) covers the view; the change is applied while it is covered.
-4. "Which object changed?" — the participant points at the object and presses the trigger. Reaction time is measured from the question to the selection.
+**One room (3 trials):**
+1. A floating message asks the participant to walk to the table and press the trigger when ready.
+2. **Sequence memory** — starting with a 3 seconds countdown. 4 coloured buttons light up in a random order (3, then 4, then 5 flashes, each trial faster).
+3. **Hidden changes** in trials 2 and 3, one random object on the table changes (colour in A, position in B, swapped for a look-alike in C) at the exact moment a button flashes. Nothing announces it.
+4. **Repeat the sequence** — the participant repeats the order by pointing at the buttons with the ray and pressing the trigger. The answer time is measured from "Your turn" to the last click and the result is not shown.
 5. **Confidence** — a 0–5 panel (0 = pure guess, 5 = completely sure), selected with the ray.
-6. The trial is written to `trials.csv`, the table is reset, next trial. After the last one the room is marked as completed (its door locks in the hub) and the participant returns to the hub.
+6. The trial is written to `trials.csv` and the next trial starts. After the last one the room is marked as completed (its door locks in the hub) and the participant returns to the hub.
 
 **Ending scene (after the three rooms):** a table with a **book and a pen** (physics). When the participant has picked up both, the book opens as a **paper questionnaire** (handwritten look, one question per page: easiest / hardest room, easiest change, effect of distractions…). Answers go to `questionnaire.csv`. Then a **results page** summarises the participant's performance (correct answers overall and per room, average confidence, confidence when right vs. wrong, average reaction time, and the total time of the experiment), and the participant **turns the page** to reach "The End — thank you for taking part".
 
@@ -67,7 +69,7 @@ In the Meta XR Simulator, point and click moves the controller ray and sends the
 
 | File | Columns |
 |--- |--- |
-| `trials.csv` | participantId, room, trialIndex, changeType, targetObject, selectedObject, correct (0/1), reactionTimeMs, confidence, timestamp |
+| `trials.csv` | one row per sequence trial: participantId, room, trialIndex, changeType, targetObject (the object that changed in that trial, `none` in trial 1), selectedObject (`sequence`), correct (1 = sequence repeated correctly), reactionTimeMs (time to repeat the sequence), confidence, timestamp |
 | `questionnaire.csv` | participantId, questionId, question, answerIndex, answer, timestamp |
 
 Delete both files between test sessions and real participants. The participant ID is `GameManager.participantId`.
@@ -78,9 +80,10 @@ Delete both files between test sessions and real participants. The participant I
 |--- |--- |
 | `GameManager` | persistent; participant ID, completed rooms, scene loading (sends the participant to `End` after the third room) |
 | `GlideLocomotion`, `RayPointer`, `PointerTarget`, `SceneLink` | locomotion, ray pointer, selectable objects, doors |
-| `TrialManager` | the trial loop of a room |
-| `ChangeApplier` → `ColorChange`, `PositionChange`, `DisappearChange` | the only thing that differs between the rooms |
-| `RoomObject`, `GreyFlicker`, `RoomHud`, `ConfidencePanel`, `WorldTextBox` | room objects, flicker mask, floating text and panels |
+| `TrialManager` | the trial loop of the previous version (study, flicker, "which object changed"). Kept for reference but switched off in the rooms |
+| `SequenceTask`, `SequenceButton` | the sequence memory task in every room: 3 trials, countdown, hidden changes on 2 random objects at a button flash, confidence after each trial, logging (`SequenceTask`); one button with light-up and press animation adapted from XR Lab 2 (`SequenceButton`). Packed in the `SequencePad` prefab (`Assets/Prefabs`) |
+| `ChangeApplier` → `ColorChange`, `PositionChange`, `DisappearChange` | the only thing that differs between the rooms. Called by `SequenceTask` during the task |
+| `RoomObject`, `GreyFlicker`, `RoomHud`, `ConfidencePanel`, `WorldTextBox` | room objects, flicker mask (previous version, not used any more), floating text and panels |
 | `TrialLogger`, `QuestionnaireLogger`, `ResultsSummary` | CSV logging and the numbers on the results page |
 | `EndingManager`, `GrabbableProp`, `PaperQuiz` | ending scene: pickup physics, paper questionnaire, results, page turn |
 | `SoundPlayer`, `AmbientSound` | 3D sound effects, background music |
@@ -92,7 +95,8 @@ Delete both files between test sessions and real participants. The participant I
 
 ### Adding or changing a room
 
-Rooms share the same scripts. A new change type is a script that extends `ChangeApplier` (`ChangeType` and `Apply(RoomObject target)`) placed next to `TrialManager` on the `Trial` object, with `Room Id` set to the scene name. Hide objects with `SetVisible(false)`, never `SetActive(false)` (it would remove the collider). Trials per room, study time and flicker length are fields on `TrialManager`.
+Rooms share the same scripts and the `SequencePad` prefab. A new change type is a script that extends `ChangeApplier` (`ChangeType` and `Apply(RoomObject target)`) placed on the `Trial` object, with `TrialManager` unticked. On the prefab's `SequenceTask`, set `Room Id` to the scene name and drag the `Trial` object into `Applier`; keep the pad and the five objects at the same positions in every room. Hide objects with `SetVisible(false)`, never `SetActive(false)` (it would remove the collider). The changed objects are random, so every object needs a value in the change script. Sequence lengths and flash speeds are set at the top of `SequenceTask`.
+
 
 ## Contributions
 
@@ -106,22 +110,21 @@ Rooms share the same scripts. A new change type is a script that extends `Change
 - **Audio:** `SoundPlayer` / `AmbientSound`; all sound effects and the elevator-music loop were synthesised with Python (no third-party audio), stored in `Assets/Resources/Audio`.
 
 ### Fatoumata OULARE
-- **Room C (disappearance):** scene, `DisappearChange` (the object disappears and is swapped for a look-alike so the empty spot does not give the answer away), look-alike replacement models (`Assets/Environment/Room_C`).
-- Hub ceiling light.
-- _(add anything else here)_
+- **Room C (disappearance/swap):** scene, `DisappearChange` (the object disappears and is swapped for a look-alike so the empty spot does not give the answer away), `replacement` field in `RoomObject`, look-alike models in `Assets/Environment/Room_C` (see credits).
+- **Sequence memory task used in all three rooms as the main task:** `SequenceTask` (3 trials of increasing length and speed, countdown, two hidden changes per room on random objects, confidence after each trial, data saved on `trials.csv`) and `SequenceButton` (press animation, light-up feedback), `SequencePad` prefab placed in rooms A, B and C (plate with buttons).
+- **Rooms layout:** objects grouped beside the task so they stay at the edge of attention.
+- **Hub:** light (ceiling spotlight and fill light).
 
 ### Meriem AIT AHMED
-- **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they all  remain on the table. The shift is undone after every trial by `RoomObject.ResetToOriginal()`.
-- **Hub**: Added a spinning ceiling fan using `FanSpinner`, the model comes from Sweet Home 3D.
-- **Audio**: added the looping fan sound, door sounds and ambient music (`DoorSound`, `AmbientMusic`,`Fan`), stored in `Assets/Resources/Audio`. These files come from external sources (see credits).
-- **Questionnaire**: Added post-experiment questions covering the number and type of changes noticed in each room, as well as participants' confidence in identifying all changes.
-
+- **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they all  remain on the table.
+- **Hub**: Added a spinning ceiling fan using `FanSpinner`.
+- **Audio**: Added sound effects for the spinning fan and doors, as well as ambient music across the different rooms : `DoorSound` \ `AmbientMusic` and `Fan` and stored in `Assets/Resources/Audio` are external. 
 
 ## Third-party assets and credits
 
 - Fonts: **Devonshire** and **Beth Ellen** (SIL Open Font License, licences in `Assets/Fonts`). Devonshire is used for the handwritten questionnaire.
-- Models: made in Sweet Home 3D (see `Assets/Environment`); replacement models for Room C by Fatoumata.
-- Sounds: some  audio effects were synthesised with Python scripts and other audio assets were sourced externally from Pixabay.
+- Models: rooms made in Sweet Home 3D (see `Assets/Environment`). Room C look alikes: **Mug** and **Desk Lamp1** from the Sweet Home 3D contributors library (Free Art License); **Ceramic Vase 01**, **Binder Notebook** and **Alarm Clock 01** from Poly Haven (CC0).
+- Sounds: external audio assets sourced from Pixabay.
   
 ## Setup
 
@@ -133,17 +136,14 @@ Rooms share the same scripts. A new change type is a script that extends `Change
 - To run: open `Assets/Scenes/Hub.unity` and press Play (a scene can also be played on its own while testing; `GameManager` creates itself). To test the ending directly, play `End.unity`.
 - Do not edit scripts while Play mode is on with the Meta XR Simulator (recompiling during Play can crash Unity). Unity > Settings > General > *Script Changes While Playing* = *Recompile After Finished Playing*.
 
-## Still to do / known limits
+## Limitations
 
+Here are the things we would change if we had more time:
 - The light panel only exists in the ending scene (the hub has the door spotlights instead).
-- Room redesign with a distraction task (button sequence to memorise) — in progress, trials per room may change.
 - Participant ID is fixed in the editor for now (no in-VR selector).
 - In-VR reset button for a new participant.
 - Test the full flow on a Quest 3 (not only in the simulator).
 
-## Submission
+## Additional information
 
-- Video recording of the app in the repo.
-- This ReadMe kept current (members, contributions, implementation, mechanism).
-- Unity project kept under 2GB total.
-- Due: **before midnight, Wednesday 4 November 2026** (Chapter 5 logistics slide; earlier decks said 22 October — confirm with the group) — repo link emailed to huyen.nguyen@universite-paris-saclay.fr.
+- There is a demo in the repository.
