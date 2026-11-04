@@ -38,23 +38,68 @@ public class EndingManager : MonoBehaviour
         string[] rooms = { "Room A (colour changes)", "Room B (position changes)", "Room C (objects disappearing)", "No difference" };
         return new List<QuizQuestion>
         {
-            new QuizQuestion { id = "easiest_room", text = "Which room did you find the EASIEST?", options = rooms },
-            new QuizQuestion { id = "hardest_room", text = "Which room did you find the HARDEST?", options = rooms },
+            new QuizQuestion { id = "easiest_room", text = "Which room did you find the EASIEST ?", options = rooms },
+            new QuizQuestion { id = "hardest_room", text = "Which room did you find the HARDEST ?", options = rooms },
             new QuizQuestion
             {
-                id = "easiest_change", text = "Which kind of change was the easiest to notice?",
+                id = "easiest_change", text = "Which kind of change was the easiest to notice ?",
                 options = new[] { "A colour changing", "An object moving", "An object disappearing", "I did not notice any change" }
             },
             new QuizQuestion
             {
-                id = "distraction", text = "How much did the button task distract you from the table?",
+                id = "distraction", text = "How much did the button task distract you from the table ?",
                 options = new[] { "Not at all", "A little", "Quite a lot", "Completely" }
             },
             new QuizQuestion
             {
-                id = "distraction_effect", text = "Did the distraction change how well you noticed the changes?",
+                id = "distraction_effect", text = "Did the distraction change how well you noticed the changes ?",
                 options = new[] { "Much harder to notice", "A little harder", "No difference", "Easier, I paid more attention" }
             },
+            new QuizQuestion
+            {
+                id = "change_a",
+                text = "How many changes did you notice in Room A ?",
+                options = new[] { "0", "1", "2", "3", "4", "5" }
+            },
+            new QuizQuestion
+            {
+                id = "type_a",
+                text = "What type of change did you notice in Room A ?",
+                options = new[]{"Colour change","Position change","Object change","I don't know","I didn't notice any change"}
+            },
+            new QuizQuestion
+            {
+                id = "change_b",
+                text = "How many changes did you notice in Room B ?",
+                options = new[] { "0", "1", "2", "3", "4", "5" }
+            },
+              new QuizQuestion
+            {
+                id = "type_b",
+                text = "What type of change did you notice in Room B ?",
+                options = new[]{"Colour change","Position change","Object change","I don't know","I didn't notice any change"}
+            },
+            new QuizQuestion
+            {
+                id = "change_c",
+                text = "How many changes did you notice in Room C ?",
+                options = new[] { "0", "1", "2", "3", "4", "5" }
+            },
+              new QuizQuestion
+            {
+                id = "type_c",
+                text = "What type of change did you notice in Room C ?",
+                options = new[]{"Colour change","Position change","Object change","I don't know","I didn't notice any change"}
+            },
+            new QuizQuestion
+            {
+                id = "confidence",
+                text = "How confident are you that you noticed all the changes?",
+                options = new[]{"Very confident","Confident","Somewhat confident","Not very confident","Not confident at all"
+                }
+            },
+
+            
         };
     }
 
