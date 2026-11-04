@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
         musicAudioSource.playOnAwake = false;
         musicAudioSource.loop = true;
         musicAudioSource.spatialBlend = 0f;
-        musicAudioSource.volume = 0.25f;
+        musicAudioSource.volume = 0.12f;
 
         if (ambientMusic != null)
         {
@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     {
         completedRooms.Clear();
         TrialLogger.ClearSession();
+        ExperimentTimer.Restart();
         LoadHub();
     }
 }

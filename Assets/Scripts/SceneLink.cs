@@ -17,6 +17,9 @@ public class SceneLink : MonoBehaviour
     [Tooltip("A completed room cannot be entered again.")]
     [SerializeField] private bool lockWhenCompleted = true;
 
+    /// <summary>The scene this door leads to (RoomA, RoomB, RoomC...).</summary>
+    public string TargetScene { get { return targetScene; } }
+
     private PointerTarget target;
 
     private void Awake()

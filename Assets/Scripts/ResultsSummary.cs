@@ -20,6 +20,7 @@ public class ResultsSummary
     }
 
     public bool hasData;
+    public float totalSeconds;               // time from the start of the experiment to the end of the questionnaire
     public int total;
     public int correct;
     public float averageReactionSeconds;
@@ -41,6 +42,7 @@ public class ResultsSummary
         if (trials.Count == 0) trials = ReadFromCsv(participantId);
 
         ResultsSummary s = new ResultsSummary();
+        s.totalSeconds = ExperimentTimer.ElapsedSeconds;
         if (trials.Count == 0) return s;
 
         s.hasData = true;
