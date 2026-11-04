@@ -10,14 +10,17 @@ using UnityEngine;
 /// Hidden changes: 2 different random table objects change (the room's ChangeApplier), one in
 /// trial 2 and one in trial 3, each at a random flash, so attention is on the button.
 /// The changes are never announced; they are asked about in the final questionnaire.
-/// The instructions use RoomHud, the same floating text as TrialManager.
-/// SETUP: untick TrialManager on the Trial object, then set Room Id, Applier and Buttons.
+/// Each trial is saved to trials.csv with TrialLogger (also used by the results page):
+/// correct = sequence repeated correctly, targetObject = the object that changed in that trial.
+/// The instructions use RoomHud, floating above the plate.
+/// SETUP: untick TrialManager on the Trial object, then set Room Id, Applier, Buttons and Plate.
 /// </summary>
 public class SequenceTask : MonoBehaviour
 {
     [SerializeField] private string roomId = "RoomC";   // RoomA, RoomB or RoomC
     [SerializeField] private ChangeApplier applier;     // the Trial object of this room
     [SerializeField] private SequenceButton[] buttons;
+    [SerializeField] private Renderer plate;            // the plate under the buttons: the text floats above it
 
     // one value per trial: longer sequence and faster flashes = harder
     private readonly int[] sequenceLengths = { 3, 4, 5 };
@@ -38,12 +41,12 @@ public class SequenceTask : MonoBehaviour
 
     private IEnumerator RunTask()
     {
-        // floating text above the table, created the same way as in TrialManager
+        // floating text above the plate, created the same way as in TrialManager
         OVRCameraRig rig = FindFirstObjectByType<OVRCameraRig>();
         Transform viewer = rig != null ? rig.centerEyeAnchor : Camera.main.transform;
         RoomObject[] roomObjects = FindObjectsByType<RoomObject>(FindObjectsSortMode.None);
         hud = gameObject.AddComponent<RoomHud>();
-        hud.Init(roomObjects, viewer, true, 0.7f);
+        hud.Init(plate.bounds, viewer, true, 0.7f); // above the buttons, where the participant looks
 
         ConfidencePanel panel = gameObject.AddComponent<ConfidencePanel>();
         panel.Init(viewer, true, 1f);
@@ -94,16 +97,26 @@ public class SequenceTask : MonoBehaviour
             nextInput = 0;
             trialSuccess = true; // becomes false at the first wrong click
             trialOver = false;
+            float answerStart = Time.time; // to measure how long the participant takes to answer
             AcceptingInput = true;
             yield return new WaitUntil(() => trialOver);
+            int answerMs = Mathf.RoundToInt((Time.time - answerStart) * 1000f);
 
             if (trialSuccess) score++;
 
             // confidence after each trial, without telling the participant if they were right
             hud.Show("How sure are you that you\nrepeated this sequence correctly?");
+            yield return new WaitForSeconds(2f);
+            hud.Show(""); // hide the text so it does not overlap the confidence panel
             int confidence = -1;
             yield return panel.Ask(c => confidence = c);
-            Debug.Log(roomId + " trial " + (t + 1) + ": " + (trialSuccess ? "correct" : "wrong") + ", confidence " + confidence);
+
+            // save the trial in trials.csv, also used by the results page in the End scene
+            bool changed = changeTargets[t] != null;
+            TrialLogger.Append(GameManager.Instance.participantId, roomId, t + 1,
+                               changed ? applier.ChangeType : "None",
+                               changed ? changeTargets[t].objectId : "none",
+                               "sequence", trialSuccess, answerMs, confidence);
         }
 
         hud.Show("Done!\nReturning to the hub...");
