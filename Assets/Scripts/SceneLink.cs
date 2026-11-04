@@ -1,3 +1,4 @@
+
 using UnityEngine;
 
 /// <summary>
@@ -10,10 +11,10 @@ using UnityEngine;
 [RequireComponent(typeof(PointerTarget))]
 public class SceneLink : MonoBehaviour
 {
-    [Tooltip("Exact scene name, e.g. RoomA, RoomB, RoomC or Hub.")]
+    [Tooltip("Exact scene name: RoomA, RoomB, RoomC or Hub.")]
     [SerializeField] private string targetScene = "RoomA";
 
-    [Tooltip("Tick on Hub doors: a room that is already completed cannot be entered again.")]
+    [Tooltip("A completed room cannot be entered again.")]
     [SerializeField] private bool lockWhenCompleted = true;
 
     private PointerTarget target;
@@ -26,13 +27,19 @@ public class SceneLink : MonoBehaviour
 
     private void Start()
     {
-        if (lockWhenCompleted && GameManager.Instance != null && GameManager.Instance.IsRoomCompleted(targetScene))
+        if (lockWhenCompleted &&
+            GameManager.Instance != null &&
+            GameManager.Instance.IsRoomCompleted(targetScene))
+        {
             target.interactable = false;
+        }
     }
 
     private void Go()
     {
         if (GameManager.Instance != null)
-            GameManager.Instance.LoadScene(targetScene);
+        {
+            GameManager.Instance.LoadSceneWithSound(targetScene);
+        }
     }
 }
