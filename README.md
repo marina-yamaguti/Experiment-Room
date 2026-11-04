@@ -111,15 +111,16 @@ Rooms share the same scripts. A new change type is a script that extends `Change
 - _(add anything else here)_
 
 ### Meriem AIT AHMED
-- **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they all  remain on the table.
-- **Hub**: Added a spinning ceiling fan using `FanSpinner`.
-- **Audio**: Added sound effects for the spinning fan and doors, as well as ambient music across the different rooms : `DoorSound` \ `AmbientMusic` and `Fan` and stored in `Assets/Resources/Audio` are external. 
+- **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they all  remain on the table. The shift is undone after every trial by `RoomObject.ResetToOriginal()`.
+- **Hub**: Added a spinning ceiling fan using `FanSpinner`, the model comes from Sweet Home 3D.
+- **Audio**: added the looping fan sound, door sounds and ambient music (`DoorSound`, `AmbientMusic`,`Fan`), stored in `Assets/Resources/Audio`. These files come from external sources (see credits).
+
 
 ## Third-party assets and credits
 
 - Fonts: **Devonshire** and **Beth Ellen** (SIL Open Font License, licences in `Assets/Fonts`). Devonshire is used for the handwritten questionnaire.
 - Models: made in Sweet Home 3D (see `Assets/Environment`); replacement models for Room C by Fatoumata.
-- Sounds: external audio assets sourced from Pixabay.
+- Sounds: some  audio effects were synthesised with Python scripts and other audio assets were sourced externally from Pixabay.
   
 ## Setup
 
