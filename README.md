@@ -116,15 +116,16 @@ Rooms share the same scripts and the `SequencePad` prefab. A new change type is 
 - **Hub:** light (ceiling spotlight and fill light).
 
 ### Meriem AIT AHMED
-- **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they all  remain on the table.
-- **Hub**: Added a spinning ceiling fan using `FanSpinner`.
-- **Audio**: Added sound effects for the spinning fan and doors, as well as ambient music across the different rooms : `DoorSound` \ `AmbientMusic` and `Fan` and stored in `Assets/Resources/Audio` are external. 
-
+- **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they remain on the table. Each object's original position is restored after every trial using `RoomObject.ResetToOriginal()`.
+- **Hub**: Added a spinning ceiling fan using `FanSpinner`. The fan model was created with Sweet Home 3D.
+- **Audio**: Integrated the looping fan sound, door sounds and ambient music (Fan, DoorSound, AmbientMusic), stored in Assets/Resources/Audio.
+- **Questionnaire**: Added post-experiment questions covering the number and type of changes noticed in each room, as well as participants' confidence in identifying all changes.
+  
 ## Third-party assets and credits
 
 - Fonts: **Devonshire** and **Beth Ellen** (SIL Open Font License, licences in `Assets/Fonts`). Devonshire is used for the handwritten questionnaire.
 - Models: rooms made in Sweet Home 3D (see `Assets/Environment`). Room C look alikes: **Mug** and **Desk Lamp1** from the Sweet Home 3D contributors library (Free Art License); **Ceramic Vase 01**, **Binder Notebook** and **Alarm Clock 01** from Poly Haven (CC0).
-- Sounds: external audio assets sourced from Pixabay.
+- Sounds: some audio effects were synthesised using Python scripts and some other sounds were external audio assets sourced from Pixabay.
   
 ## Setup
 
