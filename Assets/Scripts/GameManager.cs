@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Scenes (must be in the Build Profiles scene list)")]
     [SerializeField] private string hubScene = "Hub";
+    [SerializeField] private string endScene = "End";
 
     [Header("Session")]
     public int participantId = 1;
@@ -69,8 +70,17 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    /// <summary>
+    /// Back to the Hub after a room. Once all three rooms are done, the next stop is the
+    /// ending (book, pen and questionnaire) instead.
+    /// </summary>
     public void LoadHub()
     {
+        if (AllRoomsCompleted && Application.CanStreamedLevelBeLoaded(endScene))
+        {
+            LoadScene(endScene);
+            return;
+        }
         LoadScene(hubScene);
     }
 
@@ -78,6 +88,7 @@ public class GameManager : MonoBehaviour
     public void ResetSession()
     {
         completedRooms.Clear();
+        TrialLogger.ClearSession();
         LoadHub();
     }
 }

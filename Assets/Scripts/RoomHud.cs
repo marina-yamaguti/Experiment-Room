@@ -19,10 +19,14 @@ public class RoomHud : MonoBehaviour
 
     public void Init(RoomObject[] objects, Transform viewerTransform, bool flip, float fontSize)
     {
+        Init(RoomObject.CombinedBounds(objects), viewerTransform, flip, fontSize);
+    }
+
+    /// <summary>Same, for any table: the text floats above the given box (used by the ending scene).</summary>
+    public void Init(Bounds table, Transform viewerTransform, bool flip, float fontSize)
+    {
         viewer = viewerTransform;
         flipFacing = flip;
-
-        Bounds table = RoomObject.CombinedBounds(objects);
 
         anchor = new GameObject("HudAnchor").transform;
         anchor.SetParent(transform, false);
