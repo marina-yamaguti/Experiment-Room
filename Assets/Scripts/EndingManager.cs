@@ -30,6 +30,7 @@ public class EndingManager : MonoBehaviour
     private RoomHud hud;
     private PaperQuiz paper;
     private GlideLocomotion locomotion;
+    private RoomLight roomLight;
     private Transform viewer;
 
     private static List<QuizQuestion> DefaultQuestions()
@@ -65,9 +66,13 @@ public class EndingManager : MonoBehaviour
             return;
         }
 
+        // the background music of the other scenes (played by GameManager) is silenced here,
+        // the elevator music takes its place
+        MuteBackgroundMusic();
         if (FindFirstObjectByType<AmbientSound>() == null) gameObject.AddComponent<AmbientSound>();
 
         locomotion = FindFirstObjectByType<GlideLocomotion>();
+        roomLight = FindFirstObjectByType<RoomLight>();
         OVRCameraRig rig = FindFirstObjectByType<OVRCameraRig>();
         viewer = rig != null ? rig.centerEyeAnchor : Camera.main.transform;
 
@@ -102,6 +107,26 @@ public class EndingManager : MonoBehaviour
         return handwritingFont;
     }
 
+    private readonly List<AudioSource> mutedMusic = new List<AudioSource>();
+
+    private void MuteBackgroundMusic()
+    {
+        if (GameManager.Instance == null) return;
+        foreach (AudioSource source in GameManager.Instance.GetComponents<AudioSource>())
+        {
+            if (!source.loop || source.mute) continue;
+            source.mute = true;
+            mutedMusic.Add(source);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        // give the music back when leaving this scene (GameManager outlives it)
+        foreach (AudioSource source in mutedMusic)
+            if (source != null) source.mute = false;
+    }
+
     private IEnumerator RunEnding()
     {
         hud.Show("All three rooms are done!\nPick up the book and the pen\non the table");
@@ -130,10 +155,14 @@ public class EndingManager : MonoBehaviour
         if (locomotion != null) locomotion.movementEnabled = false;
 
         int participant = GameManager.Instance != null ? GameManager.Instance.participantId : 0;
+
+        // the room dims while the participant answers, and comes back for the results
+        if (roomLight != null) roomLight.SetDim(0.45f);
         yield return paper.Run(questions, (q, answerIndex) =>
         {
             QuestionnaireLogger.Append(participant, q.id, q.text, answerIndex, q.options[answerIndex]);
         });
+        if (roomLight != null) roomLight.SetDim(1f);
 
         // results page, then the participant turns the page: "The End". Movement stays locked, it is over.
         yield return paper.ShowResults(ResultsSummary.Compute(participant));
