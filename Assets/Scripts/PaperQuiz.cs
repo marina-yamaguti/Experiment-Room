@@ -212,7 +212,7 @@ public class PaperQuiz : MonoBehaviour
         else
         {
             float y = 0.27f;
-            const float step = 0.07f;
+            const float step = 0.063f;
 
             AddStatRow("Correct answers", r.correct + " / " + r.total, r.Accuracy, y); y -= step;
             foreach (ResultsSummary.RoomResult room in r.rooms)
@@ -226,7 +226,13 @@ public class PaperQuiz : MonoBehaviour
                        Mathf.Max(0f, r.confidenceWhenRight) / 5f, y); y -= step;
             AddStatRow("Confidence when wrong", r.confidenceWhenWrong >= 0f ? Format(r.confidenceWhenWrong) + " / 5" : "-",
                        Mathf.Max(0f, r.confidenceWhenWrong) / 5f, y); y -= step;
-            AddStatRow("Average reaction time", Format(r.averageReactionSeconds) + " s", -1f, y);
+            AddStatRow("Average reaction time", Format(r.averageReactionSeconds) + " s", -1f, y); y -= step;
+        }
+
+        // the whole experiment, also when no trial was recorded
+        {
+            int total = Mathf.RoundToInt(r.totalSeconds);
+            AddStatRow("Total time", (total / 60).ToString("00") + ":" + (total % 60).ToString("00"), -1f, r.hasData ? 0.27f - 8 * 0.063f : 0.05f);
         }
 
         BuildButton("Turn the page  >", -0.36f, 0.4f);

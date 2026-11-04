@@ -40,7 +40,7 @@ real results.
 - [x] **Physics-driven interaction** — the book and pen in the ending scene are Rigidbodies: pick them up with the ray, put them down or throw them; they fall, collide and make impact sounds (`GrabbableProp`).
 - [x] **Lighting controlled during the interaction** — in the ending scene a light panel (on a stand next to the table) switches the room light on/off and dims or brightens it in six steps (`RoomLight`, `LightPanel`); the room also dims automatically while the participant answers the questionnaire. In the hub, a spotlight above each door stays lit while that room is still to do and fades out once it is completed (`DoorSpotlight`).
 - [x] **3D positional audio** — pickup, impact and page-turn sounds are played as 3D sources at the object's position (`SoundPlayer`); door sound, looping fan sound and background music in the hub (`GameManager`, Meriem), and in the ending scene the fan sound plus elevator music (`AmbientSound`) that replaces the global background music there.
-- [x] **Countdown timer** — a 5-second study countdown before every change (`TrialManager`).
+- [x] **Countdown timer** — a small experiment timer (5 minutes, label "Experiment duration") fixed to the bottom right of the view in every scene, amber in the last minute and red at 00:00 (`ExperimentTimer`); plus a 5-second study countdown before every change (`TrialManager`).
 - [x] **Reset logic** — every trial restores the objects to their original state (`RoomObject.ResetToOriginal`), props go back to the table before the questionnaire, and `GameManager.ResetSession()` starts a new participant. _(No reset button in VR yet.)_
 - [x] **Data logging** — `trials.csv` and `questionnaire.csv` (see below).
 
@@ -59,7 +59,7 @@ In the Meta XR Simulator, point and click moves the controller ray and sends the
 5. **Confidence** — a 0–5 panel (0 = pure guess, 5 = completely sure), selected with the ray.
 6. The trial is written to `trials.csv`, the table is reset, next trial. After the last one the room is marked as completed (its door locks in the hub) and the participant returns to the hub.
 
-**Ending scene (after the three rooms):** a table with a **book and a pen** (physics). When the participant has picked up both, the book opens as a **paper questionnaire** (handwritten look, one question per page: easiest / hardest room, easiest change, effect of distractions…). Answers go to `questionnaire.csv`. Then a **results page** summarises the participant's performance (correct answers overall and per room, average confidence, confidence when right vs. wrong, average reaction time), and the participant **turns the page** to reach "The End — thank you for taking part".
+**Ending scene (after the three rooms):** a table with a **book and a pen** (physics). When the participant has picked up both, the book opens as a **paper questionnaire** (handwritten look, one question per page: easiest / hardest room, easiest change, effect of distractions…). Answers go to `questionnaire.csv`. Then a **results page** summarises the participant's performance (correct answers overall and per room, average confidence, confidence when right vs. wrong, average reaction time, and the total time of the experiment), and the participant **turns the page** to reach "The End — thank you for taking part".
 
 **Data files** (`Application.persistentDataPath`, printed in the Console on first write):
 - Mac editor: `~/Library/Application Support/DefaultCompany/Experiment-Room/`
@@ -85,6 +85,7 @@ Delete both files between test sessions and real participants. The participant I
 | `EndingManager`, `GrabbableProp`, `PaperQuiz` | ending scene: pickup physics, paper questionnaire, results, page turn |
 | `SoundPlayer`, `AmbientSound` | 3D sound effects, background music |
 | `RoomLight`, `LightPanel` | scene lighting (on/off, 6 brightness steps, automatic dimming) and its world-space Canvas control panel |
+| `ExperimentTimer` | the experiment countdown at the bottom right of the view (creates itself in every scene) |
 | `DoorSpotlight` | the spotlight above each hub door: lit until the room is completed |
 | `DoorSign`, `FanSpinner` | door signs, spinning ceiling fan |
 | `Assets/Editor/*` | menu tools that group the imported Sweet Home 3D parts and set up the End scene |

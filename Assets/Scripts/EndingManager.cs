@@ -164,7 +164,9 @@ public class EndingManager : MonoBehaviour
         });
         if (roomLight != null) roomLight.SetDim(1f);
 
-        // results page, then the participant turns the page: "The End". Movement stays locked, it is over.
+        // the experiment is complete: the timer stops and the results page shows how long it took.
+        // Then the participant turns the page: "The End". Movement stays locked, it is over.
+        ExperimentTimer.Stop();
         yield return paper.ShowResults(ResultsSummary.Compute(participant));
         yield return paper.TurnToEnd();
     }

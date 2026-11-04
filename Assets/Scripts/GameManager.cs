@@ -169,6 +169,7 @@ public class GameManager : MonoBehaviour
     {
         completedRooms.Clear();
         TrialLogger.ClearSession();
+        ExperimentTimer.Restart();
         LoadHub();
     }
 }
