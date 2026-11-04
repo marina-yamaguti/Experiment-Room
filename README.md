@@ -114,6 +114,7 @@ Rooms share the same scripts. A new change type is a script that extends `Change
 - **Room B (position):** scene and implemented `PositionChange`, allowing each object to have a different position offset while ensuring they all  remain on the table. The shift is undone after every trial by `RoomObject.ResetToOriginal()`.
 - **Hub**: Added a spinning ceiling fan using `FanSpinner`, the model comes from Sweet Home 3D.
 - **Audio**: added the looping fan sound, door sounds and ambient music (`DoorSound`, `AmbientMusic`,`Fan`), stored in `Assets/Resources/Audio`. These files come from external sources (see credits).
+- **Questionnaire**: Added post-experiment questions covering the number and type of changes noticed in each room, as well as participants' confidence in identifying all changes.
 
 
 ## Third-party assets and credits
