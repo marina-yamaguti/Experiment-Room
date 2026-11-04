@@ -11,7 +11,7 @@ public class AmbientSound : MonoBehaviour
 {
     [Tooltip("File name (without .wav) in Assets/Resources/Audio.")]
     [SerializeField] private string clipName = "elevator_music";
-    [SerializeField, Range(0f, 1f)] private float volume = 0.3f;
+    [SerializeField, Range(0f, 1f)] private float volume = 0.2f;
     [Tooltip("0 = same in both ears everywhere, 1 = comes from this object (3D).")]
     [SerializeField, Range(0f, 1f)] private float spatialBlend = 0f;
 
