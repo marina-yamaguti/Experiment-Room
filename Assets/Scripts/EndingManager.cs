@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// The ending of the experiment (scene "End", a copy of the Hub with locked doors):
 ///   pick up the book and the pen from the table -> paper questionnaire -> thank-you message.
-/// Answers go to questionnaire.csv. The questions are editable in the Inspector (Questions list).
+/// Answers go to questionnaire.csv. The questions are pre-defined..
 ///
 /// SETUP: created by Tools > End > Set up ending scene.
 /// </summary>
@@ -25,7 +25,7 @@ public class EndingManager : MonoBehaviour
     [Tooltip("Handwriting font (a .ttf imported into Unity, e.g. Assets/Fonts/PatrickHand-Regular.ttf). Empty = default font.")]
     [SerializeField] private Font handwritingFont;
     [Header("Questions (temporary, edit freely)")]
-    [SerializeField] private List<QuizQuestion> questions = DefaultQuestions();
+     private List<QuizQuestion> questions = DefaultQuestions();
 
     private RoomHud hud;
     private PaperQuiz paper;
@@ -35,11 +35,9 @@ public class EndingManager : MonoBehaviour
 
     private static List<QuizQuestion> DefaultQuestions()
     {
-        string[] rooms = { "Room A (colour changes)", "Room B (position changes)", "Room C (objects disappearing)", "No difference" };
+        string[] rooms = { "Room A", "Room B", "Room C", "No difference" };
         return new List<QuizQuestion>
         {
-            new QuizQuestion { id = "easiest_room", text = "Which room did you find the EASIEST ?", options = rooms },
-            new QuizQuestion { id = "hardest_room", text = "Which room did you find the HARDEST ?", options = rooms },
             new QuizQuestion
             {
                 id = "easiest_change", text = "Which kind of change was the easiest to notice ?",
@@ -47,19 +45,14 @@ public class EndingManager : MonoBehaviour
             },
             new QuizQuestion
             {
-                id = "distraction", text = "How much did the button task distract you from the table ?",
+                id = "distraction", text = "How much did the memory task distract you from the table ?",
                 options = new[] { "Not at all", "A little", "Quite a lot", "Completely" }
-            },
-            new QuizQuestion
-            {
-                id = "distraction_effect", text = "Did the distraction change how well you noticed the changes ?",
-                options = new[] { "Much harder to notice", "A little harder", "No difference", "Easier, I paid more attention" }
             },
             new QuizQuestion
             {
                 id = "change_a",
                 text = "How many changes did you notice in Room A ?",
-                options = new[] { "0", "1", "2", "3", "4", "5" }
+                options = new[] { "0", "1", "2", "3", "4" }
             },
             new QuizQuestion
             {
@@ -71,7 +64,7 @@ public class EndingManager : MonoBehaviour
             {
                 id = "change_b",
                 text = "How many changes did you notice in Room B ?",
-                options = new[] { "0", "1", "2", "3", "4", "5" }
+                options = new[] { "0", "1", "2", "3", "4"}
             },
               new QuizQuestion
             {
@@ -83,7 +76,7 @@ public class EndingManager : MonoBehaviour
             {
                 id = "change_c",
                 text = "How many changes did you notice in Room C ?",
-                options = new[] { "0", "1", "2", "3", "4", "5" }
+                options = new[] { "0", "1", "2", "3", "4" }
             },
               new QuizQuestion
             {
