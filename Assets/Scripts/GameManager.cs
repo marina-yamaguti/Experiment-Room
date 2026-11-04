@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Scenes")]
     [SerializeField] private string hubScene = "Hub";
+    [SerializeField] private string endScene = "End";
 
     [Header("Audio")]
     private AudioSource doorAudioSource;
@@ -150,14 +151,24 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(sceneName);
     }
 
+    /// <summary>
+    /// Back to the Hub after a room. Once all three rooms are done, the next stop is the
+    /// ending (book, pen and questionnaire) instead.
+    /// </summary>
     public void LoadHub()
     {
+        if (AllRoomsCompleted && Application.CanStreamedLevelBeLoaded(endScene))
+        {
+            LoadScene(endScene);
+            return;
+        }
         LoadScene(hubScene);
     }
 
     public void ResetSession()
     {
         completedRooms.Clear();
+        TrialLogger.ClearSession();
         LoadHub();
     }
 }
