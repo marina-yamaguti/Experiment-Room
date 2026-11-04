@@ -14,6 +14,20 @@ public static class TrialLogger
     private const string Header =
         "participantId,room,trialIndex,changeType,targetObject,selectedObject,correct,reactionTimeMs,confidence,timestamp";
 
+    /// <summary>One finished trial, kept in memory for the results page.</summary>
+    public class TrialRecord
+    {
+        public string room;
+        public bool correct;
+        public int reactionTimeMs;
+        public int confidence;
+    }
+
+    /// <summary>Every trial logged since the game started (shown on the results page).</summary>
+    public static readonly System.Collections.Generic.List<TrialRecord> Session = new System.Collections.Generic.List<TrialRecord>();
+
+    public static void ClearSession() { Session.Clear(); }
+
     public static string FilePath
     {
         get { return Path.Combine(Application.persistentDataPath, "trials.csv"); }
@@ -23,6 +37,8 @@ public static class TrialLogger
                               string targetObject, string selectedObject, bool correct,
                               int reactionTimeMs, int confidence)
     {
+        Session.Add(new TrialRecord { room = room, correct = correct, reactionTimeMs = reactionTimeMs, confidence = confidence });
+
         bool newFile = !File.Exists(FilePath);
         if (newFile) Debug.Log("TrialLogger: writing to " + FilePath);
 
