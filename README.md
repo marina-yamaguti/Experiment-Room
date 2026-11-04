@@ -144,6 +144,7 @@ Here are the things we would change if we had more time:
 - Participant ID is fixed in the editor for now (no in-VR selector).
 - In-VR reset button for a new participant.
 - Test the full flow on a Quest 3 (not only in the simulator).
+- Add more object everywhere in the room to make the changes more subtle.
 
 ## Additional information
 
