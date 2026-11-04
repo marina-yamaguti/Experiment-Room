@@ -152,3 +152,4 @@ Here are the things we would change if we had more time:
 ## Additional information
 
 - **Video demo:** [Google Drive folder](https://drive.google.com/drive/folders/1qDHZGwsvJVTBoF_VSR-R5SPpSv3N-gM8?usp=sharing). The video is not in the repository because of its size: it is recorded in 4K, since we had to film the screen with a camera to capture the sound, which makes the file too large for GitHub.
+- **Video demo (YouTube, unlisted):** https://youtu.be/wG9JoYLaDm4 — the same demo, viewable directly without downloading it.
